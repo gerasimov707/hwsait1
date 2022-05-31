@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/calculator")
 @RestController
 public class CalculatorController {
-    public final CalculatorService calculatorService;
+    private final CalculatorService calculatorService;
 
     public CalculatorController(CalculatorService calculatorService) {
         this.calculatorService = calculatorService;
@@ -16,7 +16,7 @@ public class CalculatorController {
 
     @GetMapping("/calculator")
     public String greetings() {
-        return "Welcome to calculator";
+        return calculatorService.greetings();
     }
 
     @GetMapping("/plus")
