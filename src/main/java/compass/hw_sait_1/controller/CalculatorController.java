@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/calculator")
 @RestController
 public class CalculatorController {
+    public final CalculatorService calculatorService;
+
+    public CalculatorController(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
+    }
+
     @GetMapping("/calculator")
     public String greetings() {
         return "Welcome to calculator";
@@ -16,19 +22,19 @@ public class CalculatorController {
     @GetMapping("/plus")
     public String plus(@RequestParam("num1") float a,
                        @RequestParam("num2") float b) {
-        return a + "+ " + b + "= " + (a + b);
+        return buildString(a,b,calculatorService.plus(a,b),"+");
     }
 
     @GetMapping("/minus")
     public String minus(@RequestParam("num1") float a,
                         @RequestParam("num2") float b) {
-        return a + "- " + b + "= " + (a - b);
+        return buildString(a,b,calculatorService.minus(a,b),"-");
     }
 
     @GetMapping("/multiply")
     public String multiply(@RequestParam("num1") float a,
                            @RequestParam("num2") float b) {
-        return a + "* " + b + "= " + (a * b);
+        return buildString(a,b,calculatorService.multiply(a,b),"*");
     }
 
     @GetMapping("/divide")
@@ -37,7 +43,10 @@ public class CalculatorController {
         if (b == 0) {
             return "na 0 delit nelzya";
         } else {
-            return a + "/ " + b + "= " + (a / b);
+            return buildString(a,b,calculatorService.divide(a,b),"/");
         }
+
+        }private String buildString(float a, float b, float result,String operation){
+            return String.format("%.1f %s %.1f= %.1f",a,operation,b,result);
     }
 }
